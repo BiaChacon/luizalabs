@@ -4,6 +4,8 @@ import com.biachacon.apicep.dtos.EnderecoDto;
 import com.biachacon.apicep.models.Endereco;
 import com.biachacon.apicep.services.EnderecoService;
 import io.swagger.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import javax.validation.Valid;
 @RequestMapping(value = "/endereco")
 @Api
 public class EnderecoController {
+    private static final Logger Logger = LoggerFactory.getLogger(EnderecoController.class);
 
     @Autowired
     EnderecoService enderecoService;
@@ -35,8 +38,10 @@ public class EnderecoController {
         try{
             enderecoService.insert(endereco);
         }catch (Exception E){
+            Logger.info("Endereço inválido" + endereco);
             return ResponseEntity.badRequest().build();
         }
+        Logger.info("Endereço cadastrado " + endereco);
         return ResponseEntity.status(HttpStatus.CREATED).body(endereco);
     }
 
